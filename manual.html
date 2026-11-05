@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="img/icono-estetica.png">
+<title>Ayuda, Estudio Demo</title>
+<meta name="theme-color" content="#f2ede6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+<style>
+  body { background: var(--papel); }
+  .man { max-width: 760px; margin: 0 auto; padding: 24px 18px 64px; }
+  .man h1 { font-size: clamp(2.4rem, 9vw, 3.4rem); }
+  .man .sub { margin-top: 8px; color: var(--tinta-2); font-size: 1.2rem; }
+  .indice { margin-top: 22px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .parte { margin-top: 38px; }
+  .parte > h2 { font-size: 2.2rem; }
+  .parte > .intro { margin-top: 6px; color: var(--tinta-2); }
+  .tema { margin-top: 14px; background: #fff; border-radius: var(--radio); box-shadow: inset 0 0 0 1px var(--linea); }
+  .tema > summary { list-style: none; cursor: pointer; padding: 18px 20px; font-weight: 700; font-size: 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .tema > summary::-webkit-details-marker { display: none; }
+  .tema > summary::after { content: ''; width: 10px; height: 10px; border-right: 3px solid var(--tinta); border-bottom: 3px solid var(--tinta); transform: rotate(45deg); flex: none; transition: transform 0.15s; }
+  .tema[open] > summary::after { transform: rotate(225deg); }
+  .tema .cuerpo-t { padding: 0 20px 20px; }
+  .tema ol { margin: 8px 0 0; padding: 0; list-style: none; counter-reset: p; display: grid; gap: 14px; }
+  .tema ol li { counter-increment: p; display: flex; gap: 14px; align-items: flex-start; }
+  .tema ol li::before { content: counter(p); flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--miel); color: #fff; font-weight: 700; display: grid; place-items: center; margin-top: 2px; }
+  .tema p { margin-top: 8px; }
+  .tema .nota { margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: var(--n1); }
+  .tema ul { margin: 8px 0 0; padding-left: 20px; }
+  .tema ul li { margin-top: 6px; }
+  .bien { margin-top: 18px; padding: 18px 20px; border-radius: var(--radio); background: var(--tinta); color: var(--n1); font-size: 1.2rem; }
+  .bien b { color: #fff; }
+  .acciones { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+  @media print { .acciones, .boceto-aviso, .indice { display: none; } .tema { break-inside: avoid; } .tema > summary::after { display: none; } details.tema { display: block; } body { background: #fff; } }
+</style>
+</head>
+<body>
+<div class="boceto-aviso">Boceto del manual de ayuda. Los pasos se ajustan cuando el sistema esté terminado.</div>
+<main class="man">
+  <img src="img/logo-estetica.png" height="52" alt="Estudio Demo" style="height:52px;width:auto">
+  <h1>Ayuda</h1>
+  <p class="sub">Todo lo que necesitás saber, en pocas palabras.</p>
+  <div class="indice">
+    <a class="btn chico" href="#estudio-demo">Para la profesional</a>
+    <a class="btn suave chico" href="#ayuda">Para quien ayuda a distancia</a>
+  </div>
+
+  <section class="parte" id="estudio-demo">
+    <h2>Para la profesional</h2>
+    <p class="intro">Casi todo se hace solo. Tocá el tema que necesites.</p>
+
+    <div class="bien"><b>Lo más importante:</b> no tenés que anotar nada. Los turnos aparecen solos, y si algo sale distinto, lo cambiás con un toque.</div>
+
+    <details class="tema" open>
+      <summary>Quiero ver mi día</summary>
+      <div class="cuerpo-t">
+        <p>Mirá la pantalla del mostrador, o abrí el panel en tu celular. Vas a ver tres cosas:</p>
+        <ul>
+          <li><b>Ahora:</b> la clienta que estás atendiendo. Si está en espera, dice "Estás libre hasta" y la hora.</li>
+          <li><b>Siguiente:</b> quién viene y a qué hora.</li>
+          <li><b>El resto del día:</b> tocalo para ver los demás turnos.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="tema">
+      <summary>Llegó alguien sin turno</summary>
+      <div class="cuerpo-t">
+        <ol>
+          <li><span>Tocá el botón grande <b>"Llegó alguien sin turno"</b>.</span></li>
+          <li><span>Mostrale el código que aparece. Ella lo escanea con la cámara de su celular y se anota sola.</span></li>
+          <li><span>Va a aparecer en <b>"Llegaron sin turno"</b>, con la hora aproximada en que le toca. Cuando puedas atenderla, tocá <b>"Pasar"</b>.</span></li>
+        </ol>
+        <p class="nota">Si no puede escanear, tocá <b>"Anotarla sin datos"</b>. Queda anotada y no tenés que completar nada después.</p>
+      </div>
+    </details>
+
+    <details class="tema">
+      <summary>Voy atrasada</summary>
+      <div class="cuerpo-t">
+        <ol>
+          <li><span>Tocá <b>"Voy atrasada"</b>.</span></li>
+          <li><span>Elegí cuánto: 15, 30 o 45 minutos.</span></li>
+          <li><span>Los turnos que vienen se corren solos. Aparece una lista con un botón <b>"Avisar"</b> por clienta: tocá cada uno y se abre WhatsApp con el mensaje ya escrito.</span></li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="tema">
+      <summary>Ya no puedo atender más hoy</summary>
+      <div class="cuerpo-t">
+        <ol>
+          <li><span>Tocá <b>"Cerrar reservas de hoy"</b> (está abajo en la pantalla Hoy).</span></li>
+          <li><span>La página deja de aceptar gente hoy. Para volver a abrir, tocá el mismo botón, que ahora dice "Reabrir reservas de hoy".</span></li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="tema">
+      <summary>Una clienta pagó distinto o no pagó</summary>
+      <div class="cuerpo-t">
+        <p>La caja se arma sola: supone que todas pagaron el precio de la lista de la forma de siempre. Solo si algo salió distinto:</p>
+        <ol>
+          <li><span>Entrá a <b>Caja</b>.</span></li>
+          <li><span>Buscá el turno y tocá <b>"Cambiar"</b>.</span></li>
+          <li><span>Poné el monto y cómo pagó, o tocá <b>"No se cobró"</b>.</span></li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="tema">
+      <summary>La pantalla del mostrador no anda</summary>
+      <div class="cuerpo-t">
+        <p>Seguí la tarjeta <b>"Si la pantalla no anda"</b> que está pegada al lado de la pantalla:</p>
+        <ol>
+          <li><span>Si está apagada o negra, tocala o apretá el botón de encendido. Si no prende, enchufala.</span></li>
+          <li><span>Si dice "No hay conexión", revisá el wifi. Apagá el router, esperá un minuto y volvelo a prender.</span></li>
+          <li><span>Si sigue igual, cerrá el navegador y tocá el ícono "Estudio Demo".</span></li>
+        </ol>
+        <p class="nota">Mientras se arregla, trabajá como siempre: las clientas te escriben por WhatsApp y vos seguís con tu cuaderno.</p>
+        <div class="acciones"><a class="btn suave chico" href="tarjeta.html" target="_blank" rel="noopener">Ver la tarjeta</a></div>
+      </div>
+    </details>
+
+    <details class="tema">
+      <summary>No sé qué significan los colores</summary>
+      <div class="cuerpo-t">
+        <ul>
+          <li><b>Marrón claro:</b> estás trabajando en el color.</li>
+          <li><b>Rayado:</b> el producto está haciendo efecto. En ese rato estás libre.</li>
+          <li><b>Marrón oscuro:</b> estás trabajando en el enjuague, el secado o el peinado.</li>
+          <li><b>"Nueva":</b> la clienta reservó hace poco desde la página. Se va sola después de unas horas.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section class="parte" id="ayuda">
+    <h2>Para quien ayuda a distancia</h2>
+    <p class="intro">Lo que conviene hacer una vez, y cómo mirar sin entrar todos los días.</p>
+
+    <details class="tema">
+      <summary>Primera puesta en marcha</summary>
+      <div class="cuerpo-t">
+        <ol>
+          <li><span><b>Ajustes, Servicios:</b> cargá la duración, la espera y el precio de cada servicio, con la lista real de la profesional.</span></li>
+          <li><span><b>Ajustes, Tiempo extra según el pelo:</b> definí cuántos minutos suma el pelo enrulado, la tintura previa y el mucho pelo.</span></li>
+          <li><span><b>Ajustes, Fotos:</b> subí una foto por servicio. Se ven en la página enseguida.</span></li>
+          <li><span><b>Ajustes, Cómo te pagan casi siempre:</b> elegí la forma de pago más común.</span></li>
+          <li><span><b>Cobro con QR:</b> si la profesional quiere, subí el QR de su cuenta y su alias, e imprimí la hoja.</span></li>
+          <li><span>Imprimí el <b>cartel del QR</b> para quienes llegan sin turno y la <b>tarjeta "si algo no anda"</b>, con tu nombre y teléfono.</span></li>
+          <li><span>En el celular o tablet del mostrador, abrí la <b>pantalla del día</b> y guardá el ícono en la pantalla de inicio. Se puede guiar por videollamada.</span></li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="tema">
+      <summary>Cómo mirar desde lejos sin entrar todos los días</summary>
+      <div class="cuerpo-t">
+        <p>La vista <a href="ayuda.html">"Cómo está la peluquería"</a> muestra los turnos, las reservas por la página, quién espera y una lista de lo que conviene revisar. Los avisos al celular, cuando algo falla, están pensados pero todavía no están hechos.</p>
+        <ul>
+          <li>Si la pantalla del mostrador deja de dar señal, aparece como alerta.</li>
+          <li>Si faltan precios o fotos, también.</li>
+          <li>Hay un resumen listo para copiar o mandar por WhatsApp.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="tema">
+      <summary>Cómo se calcula cuánto dura un turno</summary>
+      <div class="cuerpo-t">
+        <p>Parte de la duración cargada para cada servicio y el largo del pelo. Después suma los minutos extra según lo que marque la clienta (pelo enrulado, tintura previa en servicios de color, mucho pelo).</p>
+        <p>Cada vez que la profesional toca "Voy atrasada", el sistema lo toma como una señal de que ese servicio tarda más. Cuando hay varias, propone subir la duración en <b>Ajustes, Para revisar</b>, con un botón para aceptarlo.</p>
+      </div>
+    </details>
+
+    <details class="tema">
+      <summary>Qué pasa si algo se cae</summary>
+      <div class="cuerpo-t">
+        <ul>
+          <li>Si se cae internet en la peluquería, la pantalla del mostrador lo avisa y la profesional sigue con su cuaderno.</li>
+          <li>Las clientas siguen pudiendo escribirle por WhatsApp.</li>
+          <li>Si el proyecto gratuito en la nube se pausa por falta de uso, se reactiva desde su panel. Una tarea diaria evita que pase.</li>
+          <li>Conviene un respaldo semanal de los datos a tu email.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="tema">
+      <summary>Preguntas frecuentes</summary>
+      <div class="cuerpo-t">
+        <p><b>¿Puedo cambiar un precio o una duración?</b> Sí, en Ajustes. La página usa el dato nuevo enseguida para las próximas reservas.</p>
+        <p><b>¿Se pueden mover o cancelar turnos?</b> Todavía no está en el boceto: está previsto un link para que la clienta lo haga sola.</p>
+        <p><b>¿Qué pasa con las clientas sin WhatsApp?</b> Necesitan un número para reservar. Quien llega sin turno puede anotarse con el QR o quedar "sin datos".</p>
+        <p><b>¿Cómo agrego un servicio que falta?</b> En el panel, Ajustes, Servicios, tocá "Agregar un servicio". Escribí el nombre, cuánto dura y, si querés, el precio. Aparece enseguida en la página y en el turnero. Cualquier servicio se puede quitar de la página con "Quitar de la página" y volver a mostrar cuando quieras.</p>
+        <p><b>¿Cómo agrego fotos o videos de mis trabajos?</b> En Ajustes, "Fotos de mis trabajos": elegí el servicio y subí la foto. Cada foto se abre en grande en la página, con la invitación a reservar algo parecido.</p>
+        <p><b>Google Maps muestra el local en otro lugar. ¿Qué hago?</b> Eso se corrige en la ficha de Google, no en esta página. Entrá a "Perfil de Empresa de Google" (negocio.google.com) con la cuenta de la profesional, buscá "Estudio Demo", reclamá la ficha si todavía no es suya y elegí "Editar perfil", "Ubicación": mové el marcador al lugar exacto y guardá. Google puede pedir una verificación por teléfono o por correo. Si la ficha es de otra persona, en Google Maps se puede usar "Sugerir una edición". Para el mapa de esta página, cargá la dirección y la ubicación exacta (latitud y longitud) en Ajustes.</p>        <p><b>¿Qué falta hacer?</b> El margen libre para quienes llegan sin turno, los avisos automáticos por WhatsApp, el cobro automático con Mercado Pago y la parte de Gaby.</p>
+      </div>
+    </details>
+  </section>
+
+  <div class="acciones"><button class="btn suave chico" type="button" onclick="window.print()">Imprimir este manual</button><a class="btn suave chico" href="panel.html">Volver al panel</a></div>
+</main>
+</body>
+</html>

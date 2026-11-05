@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="img/icono-estetica.png">
+<title>Si algo no anda, Estudio Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+<link rel="stylesheet" href="carteles.css?v=4">
+
+<style>
+  @page { size: A5 portrait; margin: 0; }
+  body { background: var(--papel); }
+  .hoja { width: 148mm; min-height: 210mm; margin: 18px auto; background: #fff; padding: 12mm; box-shadow: 0 0 0 1px var(--linea); display: flex; flex-direction: column; gap: 5mm; }
+  .hoja .escalera { height: 3mm; }
+  .hoja h1 { font-size: 13mm; line-height: 1.05; }
+  .paso-t { display: flex; gap: 5mm; align-items: flex-start; padding: 4mm 0; border-top: 0.5mm solid var(--linea); }
+  .paso-t .n { flex: none; width: 13mm; height: 13mm; border-radius: 50%; background: var(--miel); color: #fff; font-weight: 700; font-size: 7mm; display: grid; place-items: center; }
+  .paso-t b { display: block; font-size: 6.4mm; line-height: 1.2; }
+  .paso-t span { display: block; font-size: 5.6mm; color: var(--tinta-2); margin-top: 1.5mm; line-height: 1.3; }
+  .contacto { margin-top: auto; padding: 5mm; border-radius: 3mm; background: var(--n1); font-size: 6mm; line-height: 1.3; }
+  .contacto b { display: block; }
+  .acciones { display: flex; gap: 12px; justify-content: center; padding: 8px 16px; flex-wrap: wrap; }
+  @media print { body { background: #fff; } .hoja { margin: 0; box-shadow: none; width: 148mm; height: 210mm; } .acciones, .boceto-aviso { display: none; } }
+  .logo-hoja { width: 24mm; height: 24mm; border-radius: 50%; align-self: center; box-shadow: 0 0 0 1mm #fff, 0 0 0 1.5mm var(--champagne); }
+</style>
+</head>
+<body>
+<div class="boceto-aviso">Vista previa de la tarjeta para plastificar y dejar en el mostrador (A5). Falta completar los nombres y teléfonos.</div>
+<div class="acciones"><button class="btn" type="button" onclick="window.print()">Imprimir</button><a class="btn suave" href="panel.html">Volver al panel</a></div>
+<div class="hoja">
+  <span class="deco a" aria-hidden="true"></span><span class="deco b" aria-hidden="true"></span>
+  <div class="escalera" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <img class="logo-hoja" src="img/logo-estetica.png" width="749" height="188" alt="Estudio Demo">
+  <h1>Si la pantalla no anda</h1>
+  <div class="orn" aria-hidden="true" style="align-self:flex-start;width:55%"><i></i><b class="rombo"></b><i></i></div>
+
+  <div class="paso-t"><div class="n">1</div><div><b>¿Está apagada o negra?</b><span>Tocala o apretá el botón de encendido. Si no prende, enchufala al cargador.</span></div></div>
+  <div class="paso-t"><div class="n">2</div><div><b>¿Dice "No hay conexión"?</b><span>Mirá que el wifi del local esté prendido. Apagá el router, esperá un minuto y volvelo a prender.</span></div></div>
+  <div class="paso-t"><div class="n">3</div><div><b>¿Sigue igual?</b><span>Cerrá el navegador y volvelo a abrir. Tocá el ícono "Estudio Demo" que está en la pantalla de inicio.</span></div></div>
+
+  <div class="contacto">
+    <b>Si nada de esto funciona, escribile a:</b>
+    ______________________ (WhatsApp ______________)
+    <span style="display:block;margin-top:2mm;font-size:5.2mm;color:var(--tinta-2)">Mientras tanto seguí con tu cuaderno: las clientas te escriben por WhatsApp como siempre.</span>
+  </div>
+  <div class="escalera" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+</div>
+</body>
+</html>

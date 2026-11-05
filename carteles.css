@@ -1,0 +1,118 @@
+/* Carteles imprimibles y pantallas del local: formas suaves, color cálido y movimiento (solo en pantalla, no al imprimir) */
+@property --giro { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+
+/* ---------- Hoja A5 ---------- */
+.hoja {
+  position: relative; isolation: isolate; overflow: hidden;
+  background:
+    radial-gradient(120% 70% at 100% 0%, #fbe6c9 0%, rgba(251, 230, 201, 0) 60%),
+    radial-gradient(110% 60% at 0% 100%, #ecd0ac 0%, rgba(236, 208, 172, 0) 62%),
+    linear-gradient(170deg, #fffaf2 0%, #f8ead7 100%) !important;
+  border-radius: 9mm; box-shadow: 0 14px 40px -14px rgba(110, 70, 35, 0.4), 0 0 0 1px rgba(200, 159, 109, 0.35) !important;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.hoja .escalera { display: none !important; }
+.hoja > * { position: relative; z-index: 2; }
+.hoja h1, .hoja h2 { font-weight: 700; letter-spacing: -0.01em; line-height: 1.02; }
+.hoja h2 { color: #82532d; font-style: italic; font-weight: 600; }
+
+/* Manchas orgánicas de fondo */
+.hoja::before, .hoja::after, .hoja .deco { content: ''; position: absolute; z-index: 0; pointer-events: none; }
+.hoja::before {
+  width: 84mm; height: 84mm; top: -26mm; right: -24mm; opacity: 0.55;
+  background: radial-gradient(circle at 30% 30%, #f1d3a8, #c89f6d 70%);
+  border-radius: 62% 38% 55% 45% / 48% 58% 42% 52%;
+  animation: mancha 14s ease-in-out infinite alternate;
+}
+.hoja::after {
+  width: 96mm; height: 96mm; bottom: -40mm; left: -30mm; opacity: 0.4;
+  background: radial-gradient(circle at 60% 40%, #d9aa72, #9e6b40 75%);
+  border-radius: 46% 54% 38% 62% / 55% 40% 60% 45%;
+  animation: mancha 18s ease-in-out infinite alternate-reverse;
+}
+.hoja .deco { }
+.hoja .deco.a { width: 22mm; height: 22mm; top: 78mm; left: -8mm; border-radius: 50%; border: 0.6mm dashed rgba(158, 107, 64, 0.45); animation: girar 40s linear infinite; }
+.hoja .deco.b { width: 14mm; height: 14mm; bottom: 46mm; right: 8mm; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff, #e6c89f); opacity: 0.8; animation: flotar 6s ease-in-out infinite; }
+
+/* Adorno bajo el título */
+.hoja .orn { display: flex; align-items: center; justify-content: center; gap: 4mm; width: 70%; color: #9e6b40; }
+.hoja .orn i { flex: 1; height: 0.5mm; background: linear-gradient(90deg, transparent, #c89f6d 60%, #c89f6d); border-radius: 1mm; }
+.hoja .orn i:last-child { background: linear-gradient(270deg, transparent, #c89f6d 60%, #c89f6d); }
+.hoja .orn b { font-size: 6mm; line-height: 1; animation: titilar 3.2s ease-in-out infinite; }
+
+/* Logo con aro suave */
+.hoja .logo-hoja { box-shadow: 0 0 0 1.2mm #fff, 0 0 0 2mm #dfc19f, 0 3mm 8mm -2mm rgba(110, 70, 35, 0.4) !important; }
+
+/* Tarjeta del QR: blanca, redondeada, con borde que brilla */
+.hoja .caja-qr {
+  position: relative; border: 0 !important; border-radius: 9mm; background: #fff; padding: 6mm !important;
+  box-shadow: 0 7mm 16mm -6mm rgba(110, 70, 35, 0.45), 0 0 0 1.4mm #fff;
+}
+.hoja .caja-qr::before {
+  content: ''; position: absolute; inset: -2.6mm; border-radius: 11mm; z-index: -1;
+  background: conic-gradient(from var(--giro), #f2dcb9, #b98757, #fff4e2, #dfc19f, #9e6b40, #f2dcb9);
+  animation: brillo 6s linear infinite;
+}
+.hoja .caja-qr img { border-radius: 3mm; }
+.hoja .flecha { font-size: 9mm; line-height: 1; color: #9e6b40; animation: rebote 1.6s ease-in-out infinite; }
+.hoja p { color: #6b5446 !important; }
+
+/* Entrada suave */
+.hoja > *:not(.deco) { animation: aparecer 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.hoja > *:nth-child(3) { animation-delay: 0.05s; } .hoja > *:nth-child(4) { animation-delay: 0.12s; }
+.hoja > *:nth-child(5) { animation-delay: 0.2s; } .hoja > *:nth-child(6) { animation-delay: 0.28s; }
+.hoja > *:nth-child(7) { animation-delay: 0.36s; } .hoja > *:nth-child(8) { animation-delay: 0.44s; }
+
+/* Pasos de la tarjeta del mostrador */
+.hoja .paso-t { border-top: 0 !important; background: rgba(255, 255, 255, 0.72); border-radius: 6mm; padding: 4mm 5mm !important; box-shadow: 0 2mm 6mm -3mm rgba(110, 70, 35, 0.3); }
+.hoja .paso-t .n { background: linear-gradient(145deg, #c08b57, #82532d) !important; box-shadow: 0 1.5mm 3mm rgba(130, 83, 45, 0.45); }
+.hoja .contacto { border-radius: 6mm !important; background: rgba(255, 255, 255, 0.8) !important; }
+.hoja .alias { background: rgba(255, 255, 255, 0.85); padding: 3mm 6mm; border-radius: 99mm; }
+
+@keyframes mancha { 0% { border-radius: 62% 38% 55% 45% / 48% 58% 42% 52%; transform: rotate(0) scale(1); } 100% { border-radius: 40% 60% 42% 58% / 60% 42% 58% 40%; transform: rotate(14deg) scale(1.08); } }
+@keyframes girar { to { transform: rotate(360deg); } }
+@keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3mm); } }
+@keyframes titilar { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.55; transform: scale(0.82); } }
+@keyframes brillo { to { --giro: 360deg; } }
+@keyframes rebote { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2.5mm); } }
+@keyframes aparecer { from { opacity: 0; transform: translateY(5mm); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) { .hoja *, .hoja::before, .hoja::after { animation: none !important; } }
+@media print {
+  .hoja { border-radius: 0 !important; box-shadow: none !important; }
+  .hoja *, .hoja::before, .hoja::after { animation: none !important; }
+  .hoja .caja-qr::before { background: linear-gradient(135deg, #f2dcb9, #b98757); }
+}
+
+/* ---------- Pantalla del mostrador (pared) y página de "Ya estoy acá" ---------- */
+body.pantalla-linda, body.estoy-linda {
+  background:
+    radial-gradient(60% 45% at 100% 0%, #fbe3c3 0%, rgba(251, 227, 195, 0) 70%),
+    radial-gradient(70% 50% at 0% 100%, #ecd0ac 0%, rgba(236, 208, 172, 0) 70%),
+    linear-gradient(170deg, #fffaf2, #f6e7d3) fixed !important;
+}
+body.pantalla-linda::before, body.estoy-linda::before {
+  content: ''; position: fixed; z-index: -1; width: min(60vw, 520px); height: min(60vw, 520px); top: -14vw; right: -12vw; opacity: 0.35; pointer-events: none;
+  background: radial-gradient(circle at 30% 30%, #f1d3a8, #c89f6d 70%); border-radius: 62% 38% 55% 45% / 48% 58% 42% 52%; animation: mancha 16s ease-in-out infinite alternate;
+}
+body.pantalla-linda::after, body.estoy-linda::after {
+  content: ''; position: fixed; z-index: -1; width: min(70vw, 600px); height: min(70vw, 600px); bottom: -22vw; left: -18vw; opacity: 0.28; pointer-events: none;
+  background: radial-gradient(circle at 60% 40%, #d9aa72, #9e6b40 75%); border-radius: 46% 54% 38% 62% / 55% 40% 60% 45%; animation: mancha 20s ease-in-out infinite alternate-reverse;
+}
+.pantalla-linda .tarjeta-p { border-radius: 28px !important; background: rgba(255, 255, 255, 0.82) !important; backdrop-filter: blur(6px); box-shadow: 0 14px 34px -16px rgba(110, 70, 35, 0.35), 0 0 0 1.5px rgba(223, 193, 159, 0.7) !important; animation: aparecer 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.pantalla-linda .tarjeta-p:nth-of-type(2) { animation-delay: 0.08s; } .pantalla-linda .tarjeta-p:nth-of-type(3) { animation-delay: 0.16s; }
+.pantalla-linda .espera-p { box-shadow: 0 14px 34px -16px rgba(110, 70, 35, 0.35), 0 0 0 3px var(--miel) !important; animation: aparecer 0.7s both, latido 2.6s ease-in-out 0.8s infinite; }
+.pantalla-linda .reloj { background: linear-gradient(180deg, #3a2518, #9e6b40); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.pantalla-linda .aviso-libre { border-radius: 20px; background: linear-gradient(120deg, #f7e7cf, #f0d6b2); }
+.estoy-linda .estoy { animation: aparecer 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.estoy-linda .estoy h1 { font-style: italic; color: #82532d; }
+.estoy-linda .estoy .btn { box-shadow: 0 12px 26px -10px rgba(130, 83, 45, 0.7); }
+.estoy-linda .estoy .hora-grande { background: linear-gradient(180deg, #3a2518, #9e6b40); -webkit-background-clip: text; background-clip: text; color: transparent; animation: aparecer 0.8s both; }
+.estoy-linda .estoy .resultado { border-radius: 28px; background: rgba(255, 255, 255, 0.85); padding: 24px; box-shadow: 0 14px 34px -16px rgba(110, 70, 35, 0.35); }
+@keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.012); } }
+@media (prefers-reduced-motion: reduce) { body::before, body::after, .tarjeta-p, .estoy { animation: none !important; } }
+
+
+.hoja .orn b.rombo { display: block; width: 2.6mm; height: 2.6mm; background: #9e6b40; transform: rotate(45deg); border-radius: 0.4mm; font-size: 0; }
+@keyframes titilar-rombo { 0%, 100% { opacity: 1; transform: rotate(45deg) scale(1); } 50% { opacity: 0.55; transform: rotate(45deg) scale(0.8); } }
+.hoja .orn b.rombo { animation: titilar-rombo 3.2s ease-in-out infinite; }

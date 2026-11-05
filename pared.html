@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="img/icono-estetica.png">
+<title>Estudio Demo, el día</title>
+<meta name="theme-color" content="#f2ede6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css?v=42">
+<link rel="stylesheet" href="carteles.css?v=4">
+
+<style>
+  body { background: var(--papel); }
+  .pared { max-width: 960px; margin: 0 auto; padding: 22px 20px 40px; }
+  .cab { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .reloj { font-family: var(--sans); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; letter-spacing: -0.04em; font-size: clamp(3.4rem, 14vw, 6rem); line-height: 1; }
+  .fecha { font-size: 1.5rem; color: var(--tinta-2); }
+  .tarjeta-p { margin-top: 22px; background: #fff; border-radius: 18px; padding: 22px 24px; box-shadow: inset 0 0 0 2px var(--linea); }
+  .tarjeta-p h2 { font-size: 1.7rem; color: var(--tinta-2); font-family: var(--sans); font-weight: 600; letter-spacing: 0; }
+  .tarjeta-p .nombre { font-size: clamp(2.2rem, 8vw, 3.6rem); font-weight: 700; line-height: 1.1; margin-top: 6px; }
+  .tarjeta-p .detalle { font-size: clamp(1.4rem, 5vw, 2rem); color: var(--tinta-2); margin-top: 4px; }
+  .tarjeta-p .hora-g { font-family: var(--sans); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; letter-spacing: -0.03em; font-size: clamp(3rem, 12vw, 5rem); line-height: 1; }
+  .aviso-libre { margin-top: 16px; padding: 14px 18px; border-radius: 12px; background: var(--n1); font-size: 1.5rem; font-weight: 600; }
+  .fila-p { display: flex; gap: 18px; align-items: baseline; padding: 14px 0; border-top: 2px solid var(--linea); font-size: clamp(1.4rem, 5vw, 2rem); }
+  .fila-p:first-of-type { border-top: 0; }
+  .fila-p .h { font-weight: 700; width: 5.2ch; flex: none; }
+  .fila-p .n { font-weight: 700; }
+  .fila-p .s { color: var(--tinta-2); display: block; font-size: 0.8em; font-weight: 400; }
+  .espera-p { box-shadow: inset 0 0 0 3px var(--miel); }
+  .pie-p { margin-top: 26px; color: var(--tinta-2); font-size: 1.1rem; text-align: center; }
+  .sin-red { background: var(--aviso); color: #fff; font-size: 1.6rem; line-height: 1.3; padding: 18px 20px; text-align: center; }
+  .etq { font-size: 0.7em; margin-left: 10px; padding: 2px 12px; border-radius: 999px; background: var(--champagne); vertical-align: middle; font-weight: 700; }
+
+  /* Pantalla del mostrador: dos columnas en pantallas anchas, una en celulares y tabletas verticales */
+  .pared { max-width: 1280px; padding: 28px 32px 40px; }
+  .cab { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .cab-logo { height: 56px; width: auto; }
+  .cab-hora { display: flex; align-items: baseline; gap: 22px; flex-wrap: wrap; justify-content: flex-end; }
+  .fecha { font-size: 1.5rem; font-weight: 600; color: var(--tinta-2); text-transform: none; }
+  .fecha::first-letter { text-transform: uppercase; }
+  .etq { font-family: var(--sans); font-weight: 700; font-size: 0.45em; vertical-align: middle; }
+  .cols { margin-top: 8px; display: grid; gap: 22px; grid-template-columns: 1fr; align-items: start; }
+  @media (min-width: 900px) { .cols { grid-template-columns: 1.15fr 1fr; } }
+  .cols .tarjeta-p { margin-top: 18px; }
+  .tarjeta-p h2 { font-family: var(--sans); font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--miel-osc); font-weight: 700; }
+  .tarjeta-p .nombre { font-family: var(--serif); font-weight: 700; font-size: clamp(2.4rem, 6vw, 4rem); }
+  .prog { margin-top: 16px; height: 14px; border-radius: 99px; background: rgba(158, 107, 64, 0.18); overflow: hidden; }
+  .prog i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #d9aa72, #9e6b40); transition: width 1s ease; }
+  .prog-et { display: flex; justify-content: space-between; margin-top: 8px; font-weight: 700; font-size: 1.15rem; color: var(--tinta-2); font-variant-numeric: tabular-nums; }
+  .sig-fila { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+  .en-min { margin-top: 8px; display: inline-block; padding: 4px 14px; border-radius: 99px; background: #f1ddc3; color: #6b4426; font-weight: 700; font-size: 1.1rem; }
+  .fila-p .h { font-family: var(--sans); font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .aviso-libre.urgente { background: linear-gradient(120deg, #f6c9a8, #eaa070) !important; animation: latido 1.4s ease-in-out infinite; }
+</style>
+</head>
+<body class="pantalla-linda">
+<div class="sin-red" id="sin-red" role="alert" hidden><b>No hay conexión.</b> Revisá que el wifi del local esté prendido. Si sigue igual, apagá el celular y volvé a prenderlo.</div>
+<main class="pared">
+  <header class="cab">
+    <img src="img/logo-estetica.png" height="52" alt="Estudio Demo" class="cab-logo">
+    <div class="cab-hora"><div class="reloj" id="reloj">--:--</div><div class="fecha" id="fecha"></div></div>
+  </header>
+  <div class="cols">
+    <div class="col-a">
+      <section class="tarjeta-p" id="ahora" aria-live="polite"></section>
+      <section class="tarjeta-p" id="cobrar-p" hidden></section>
+      <section class="tarjeta-p espera-p" id="espera" hidden></section>
+    </div>
+    <div class="col-b">
+      <section class="tarjeta-p" id="sig"></section>
+      <section class="tarjeta-p" id="resto-b"><h2>Más tarde</h2><div id="resto"></div></section>
+    </div>
+  </div>
+</main>
+<script src="datos.js"></script>
+<script src="nube.js?v=3"></script>
+<script src="store.js"></script>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var esc = function (t) { return String(t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var hhmm = function (m) { return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
+  var DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+  var MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  var desc = function (t) { return [t.serv].concat((t.adicionales || []).map(function (a) { return a.serv; })).join(' + ') + (t.largo ? ', pelo ' + t.largo : ''); };
+  var pesos = function (n) { return '$' + Number(n).toLocaleString('es-AR'); };
+
+  function pintar() {
+    Store.latido();
+    var hoy = new Date();
+    var ahora = Store.ahora();
+    $('#reloj').textContent = hhmm(ahora);
+    $('#fecha').textContent = DIAS[hoy.getDay()] + ' ' + hoy.getDate() + ' de ' + MESES[hoy.getMonth()];
+    var dia = Store.dia(Store.clave(hoy));
+    var enCurso = dia.filter(function (t) { return t.ini <= ahora && ahora < t.ini + Store.total(t.seg); });
+    var prox = dia.filter(function (t) { return t.ini > ahora; });
+
+    if (enCurso.length) {
+      $('#ahora').innerHTML = '<h2>Ahora ' + (enCurso.length > 1 ? '<small style="font-size:1.1rem;color:var(--tinta-2);font-weight:400">(' + enCurso.length + ' en simultáneo)</small>' : '') + '</h2>' + enCurso.map(function (t, idx) {
+        var tr = Store.tramos(t.seg, t.ini);
+        var actual = tr.filter(function (x) { return ahora >= x.a && ahora < x.b; })[0];
+        var fin = tr[tr.length - 1].b;
+        var libre = '';
+        if (actual && actual.tipo === 'espera') {
+          var rem = actual.b - ahora;
+          if (rem <= 0) {
+            libre = '<div class="aviso-libre urgente">Tiempo cumplido. Enjuagar ahora</div>';
+          } else if (rem <= 5) {
+            libre = '<div class="aviso-libre urgente">Enjuagar en ' + rem + ' min! (a las ' + hhmm(actual.b) + ')</div>';
+          } else {
+            libre = '<div class="aviso-libre">Pose: faltan ' + rem + ' min (enjuagar a las ' + hhmm(actual.b) + ')</div>';
+          }
+        }
+        var sep = idx > 0 ? '<hr style="border:0;border-top:2px solid var(--linea);margin:18px 0">' : '';
+        var pct = Math.max(2, Math.min(100, Math.round(((ahora - t.ini) / (fin - t.ini)) * 100)));
+        var prog = '<div class="prog" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + pct + '%"></i></div><div class="prog-et"><span>' + hhmm(t.ini) + '</span><span>Termina ' + hhmm(fin) + '</span></div>';
+        return sep + '<div class="nombre">' + esc(t.nom) + '</div><div class="detalle">' + esc(desc(t)) + '</div>' + prog + libre;
+      }).join('');
+    } else {
+      $('#ahora').innerHTML = '<h2>Ahora</h2><div class="detalle">No hay nadie en turno en este momento.</div>';
+    }
+
+    var s = prox[0];
+    $('#sig').innerHTML = '<h2>Siguiente</h2>' + (s
+      ? '<div class="sig-fila"><div class="hora-g">' + hhmm(s.ini) + '</div><div><div class="nombre" style="margin-top:0">' + esc(s.nom) +
+        (Store.esNuevo(s) ? '<span class="etq">Nueva</span>' : '') + '</div><div class="detalle">' + esc(desc(s)) + '</div><div class="en-min">' + (s.ini - ahora < 60 ? 'En ' + (s.ini - ahora) + ' min' : 'En ' + Math.floor((s.ini - ahora) / 60) + ' h ' + ((s.ini - ahora) % 60 ? (s.ini - ahora) % 60 + ' min' : '')) + '</div></div></div>'
+      : '<div class="detalle">No hay más turnos hoy.</div>');
+
+    var cobrar = Store.porCobrar();
+    $('#cobrar-p').hidden = cobrar.length === 0;
+    $('#cobrar-p').innerHTML = '<h2>Para cobrar</h2>' + cobrar.map(function (x) {
+      return '<div class="fila-p" style="display:block"><div class="n">' + esc(x.nom) + '<span class="s">' + x.servicios.map(esc).join(' + ') + '</span></div><div class="hora-g" style="font-size:2.6rem;margin-top:6px">' + (x.sinPrecio ? 'Sin precio' : pesos(x.monto)) + '</div></div>';
+    }).join('');
+    var fila = Store.fila();
+    $('#espera').hidden = fila.length === 0;
+    $('#espera').innerHTML = '<h2>Esperando sin turno</h2>' + fila.map(function (e) {
+      return '<div class="fila-p"><div class="h">' + (e.est !== null ? hhmm(e.est) : '--:--') + '</div><div class="n">' + esc(e.nom) + '<span class="s">' + esc(desc(e)) + '</span></div></div>';
+    }).join('');
+
+    var resto = prox.slice(1);
+    $('#resto-b').hidden = resto.length === 0;
+    $('#resto').innerHTML = resto.map(function (t) {
+      return '<div class="fila-p"><div class="h">' + hhmm(t.ini) + '</div><div class="n">' + esc(t.nom) + '<span class="s">' + esc(desc(t)) + '</span></div></div>';
+    }).join('');
+  }
+
+  pintar();
+  setInterval(pintar, 15000);
+
+  // Si falta internet, la pantalla lo dice en grande y explica qué hacer (sin que la profesional tenga que saber de tecnología)
+  function revisarRed() {
+    if (location.protocol === 'file:') return;
+    if (!navigator.onLine) { $('#sin-red').hidden = false; return; }
+    fetch('pared.html', { method: 'HEAD', cache: 'no-store' })
+      .then(function (r) { $('#sin-red').hidden = r.ok; })
+      .catch(function () { $('#sin-red').hidden = false; });
+  }
+  revisarRed();
+  setInterval(revisarRed, 30000);
+  window.addEventListener('online', revisarRed);
+  window.addEventListener('offline', revisarRed);
+
+  // La pantalla no se apaga sola mientras esta página está abierta
+  function pedirPantalla() {
+    if ('wakeLock' in navigator) navigator.wakeLock.request('screen').catch(function () {});
+  }
+  pedirPantalla();
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') pedirPantalla(); });
+
+  // Se vuelve a cargar sola cada 6 horas para que no se quede trabada
+  setTimeout(function () { location.reload(); }, 6 * 3600 * 1000);
+  window.addEventListener('storage', function (e) { if (Store.CLAVES.indexOf(e.key) >= 0) pintar(); });
+})();
+</script>
+<script>
+  /* La pantalla del mostrador muestra la agenda de la profesional: hay que haber entrado al panel en este mismo navegador */
+  document.addEventListener('DOMContentLoaded', function () {
+    var N = window.NUBE; if (!N || N.modo !== 'anon') return;
+    var d = document.createElement('div'); d.id = 'sin-sesion-pared';
+    d.style.cssText = 'position:fixed;inset:0;z-index:9;background:#1f1612;color:#f7efe6;display:grid;place-items:center;text-align:center;padding:24px;font:600 1.4rem var(--sans)';
+    d.innerHTML = '<div>Para ver esta pantalla, entrá primero al panel en este navegador.<br><br><a href="panel.html" style="color:#e4b684">Ir al panel</a></div>';
+    document.body.appendChild(d);
+  });
+</script>
+</body>
+</html>

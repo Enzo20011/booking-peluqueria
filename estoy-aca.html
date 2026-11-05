@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="img/icono-estetica.png">
+<title>Ya estoy acá, Estudio Demo</title>
+<meta name="theme-color" content="#f2ede6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css?v=40">
+<link rel="stylesheet" href="carteles.css?v=4">
+
+</head>
+<body class="estoy-linda">
+<main class="estoy" id="estoy">
+  <div class="escalera" aria-hidden="true" style="margin-bottom:18px"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div style="display:flex;align-items:center;gap:14px"><img src="img/logo-estetica.png" height="52" alt="Estudio Demo" style="height:52px;width:auto"><p class="marca-chica">Estudio Demo</p></div>
+
+  <section id="vista-form">
+    <h1>Ya estoy acá</h1>
+    <p class="sub">Anotate y te decimos más o menos a qué hora te toca. La profesional está atendiendo.</p>
+    <form id="f" novalidate>
+      <div class="campo"><label for="nombre">Tu nombre</label><input id="nombre" autocomplete="given-name"><div class="error" id="e-nombre"></div></div>
+      <div class="campo"><label for="tel">Tu WhatsApp</label><small class="hint-campo">Con la característica, sin 0 ni 15.</small><input id="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej: 3757 515300"><div class="error" id="e-tel"></div></div>
+      <div class="campo"><label for="serv">¿Qué te querés hacer?</label><select id="serv" class="sel" style="min-height:56px;font-size:1.125rem"></select></div>
+      <div class="campo" id="c-largo"><label>¿Qué largo tiene tu pelo?</label>
+        <div class="chips" id="largo">
+          <button class="chip" type="button" data-l="corto" aria-pressed="false">Corto</button>
+          <button class="chip" type="button" data-l="medio" aria-pressed="true">Medio</button>
+          <button class="chip" type="button" data-l="largo" aria-pressed="false">Largo</button>
+        </div>
+      </div>
+      <button class="btn" type="submit">Anotarme</button>
+    </form>
+  </section>
+
+  <section id="vista-res" class="resultado" hidden></section>
+</main>
+
+<script src="datos.js"></script>
+<script src="nube.js?v=3"></script>
+<script src="store.js"></script>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var esc = function (t) { return String(t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var hhmm = function (m) { return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
+  var items = Store.items();
+  var largo = 'medio';
+
+  $('#serv').innerHTML = items.map(function (it) { return '<option value="' + it.id + '">' + esc(it.nombre) + '</option>'; }).join('') +
+    '<option value="consulta">No sé qué hacerme: lo decido en la peluquería</option>';
+
+  function actualizarLargo() {
+    var id = $('#serv').value;
+    var it = id === 'consulta' ? window.CONSULTA : items.find(function (x) { return x.id === id; });
+    $('#c-largo').hidden = !it.largo;
+  }
+  $('#serv').addEventListener('change', actualizarLargo);
+  actualizarLargo();
+  $('#largo').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-l]');
+    if (!b) return;
+    largo = b.dataset.l;
+    document.querySelectorAll('#largo .chip').forEach(function (c) { c.setAttribute('aria-pressed', String(c === b)); });
+  });
+
+  $('#f').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var n = $('#nombre').value.trim();
+    var t = $('#tel').value.replace(/[^\d]/g, '');
+    $('#e-nombre').textContent = n.length < 2 ? 'Escribí tu nombre.' : '';
+    $('#e-tel').textContent = t.length < 8 ? 'Revisá el número: tiene que llevar la característica.' : '';
+    if (n.length < 2 || t.length < 8) return;
+
+    var id = $('#serv').value;
+    var it = id === 'consulta' ? window.CONSULTA : items.find(function (x) { return x.id === id; });
+    var lg = it.largo ? largo : undefined;
+    var res = $('#vista-res');
+    $('#vista-form').hidden = true;
+    res.hidden = false;
+
+    if (Store.cerradoHoy()) {
+      res.innerHTML = '<h1>Hoy ya no hay lugar</h1><p class="sub">La profesional no puede tomar más personas hoy. Si querés, reservá un turno para otro día.</p>' +
+        '<a class="btn" href="index.html">Reservar para otro día</a>';
+      return;
+    }
+
+    var seg = Store.segmentos(it, lg || 'medio');
+    var ahora = Store.ahora();
+    var f = Store.clave(new Date());
+
+    // Si hay un hueco ahora mismo (la profesional está esperando que le haga efecto el color, por ejemplo),
+    // la clienta entra directo a la agenda. La profesional no tiene que hacer nada: aparece sola en la pantalla del mostrador.
+    var huecoIni = detectarHueco(seg, f, ahora);
+    if (huecoIni !== null) {
+      Store.add({
+        fecha: f, ini: huecoIni,
+        nom: n, tel: $('#tel').value,
+        serv: it.nombre, servId: it.id, largo: lg,
+        seg: seg, origen: 'sin_turno', nuevo: true, creado: Date.now(),
+      });
+      res.innerHTML = '<h1>Listo, ' + esc(n.split(' ')[0]) + '</h1>' +
+        '<p class="sub">Tu lugar está reservado para las</p>' +
+        '<div class="hora-grande">' + hhmm(huecoIni) + '</div>' +
+        '<p class="sub">La profesional te espera a esa hora. Ya aparecés en su agenda.</p>' +
+        '<p class="nota">La hora puede cambiar un poquito si el trabajo anterior se extiende.</p>';
+      return;
+    }
+
+    // No hay hueco inmediato: va a la fila y la profesional la pasa cuando pueda.
+    var e2 = Store.filaAdd({ nom: n, tel: $('#tel').value, serv: it.nombre, servId: it.id, largo: lg, seg: seg });
+    var antes = Store.fila().findIndex(function (x) { return x.id === e2.id; });
+    if (e2.est === null) {
+      res.innerHTML = '<h1>Hoy no llegamos</h1><p class="sub">No queda lugar hoy para ' + esc(it.nombre) + '. Podés reservar para otro día.</p><a class="btn" href="index.html">Reservar para otro día</a>';
+      return;
+    }
+    res.innerHTML = '<h1>Listo, ' + esc(n.split(' ')[0]) + '</h1>' +
+      '<p class="sub">Te toca aproximadamente a las</p>' +
+      '<div class="hora-grande">' + hhmm(e2.est) + '</div>' +
+      '<p class="sub">' + (antes > 0 ? 'Hay ' + antes + (antes === 1 ? ' persona' : ' personas') + ' antes que vos. ' : '') + 'La profesional ya sabe que estás acá.</p>' +
+      '<p class="nota">Si querés dar una vuelta, te escribimos por WhatsApp cuando se acerque tu turno. La hora puede cambiar un poco.</p>';
+  });
+
+  // Mira si hay algún tramo de espera activo en este momento con lugar para el servicio pedido.
+  // Devuelve el minuto de inicio si hay hueco libre, o null si no hay.
+  function detectarHueco(seg, f, ahora) {
+    var durNuevo = Store.total(seg);
+    var enCurso = Store.dia(f).filter(function (x) {
+      return x.ini <= ahora && ahora < x.ini + Store.total(x.seg);
+    });
+    for (var i = 0; i < enCurso.length; i++) {
+      var turno = enCurso[i];
+      var tramos = Store.tramos(turno.seg, turno.ini);
+      for (var j = 0; j < tramos.length; j++) {
+        var tr = tramos[j];
+        if (tr.tipo !== 'espera') continue;
+        var desde = Math.max(ahora, tr.a);
+        if (desde + durNuevo <= tr.b) {
+          if (Store.libre(f, desde, seg).libre) return desde;
+        }
+      }
+    }
+    return null;
+  }
+})();
+</script>
+</body>
+</html>

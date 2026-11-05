@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="img/icono-estetica.png">
+<title>Estudio Demo, ayuda a distancia</title>
+<meta name="theme-color" content="#f2ede6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+<style>
+  body { background: var(--papel); }
+  .ay { max-width: 820px; margin: 0 auto; padding: 24px 18px 56px; }
+  .ay h1 { font-size: 2.6rem; }
+  .ay .sub { margin-top: 6px; color: var(--tinta-2); }
+  .ay .bloque { margin-top: 18px; }
+  .estado { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0; }
+  .dato-e { padding: 14px 18px; border-top: 1px solid var(--linea); }
+  .dato-e span { color: var(--tinta-2); display: block; }
+  .dato-e b { font-size: 1.5rem; display: block; margin-top: 2px; }
+  .alerta { display: flex; gap: 12px; padding: 14px 18px; border-top: 1px solid var(--linea); align-items: flex-start; }
+  .punto { width: 14px; height: 14px; border-radius: 50%; flex: none; margin-top: 7px; background: var(--ok); }
+  .punto.mal { background: var(--aviso); }
+  .punto.medio { background: var(--miel); }
+  .alerta b { display: block; }
+  .alerta span { color: var(--tinta-2); }
+  textarea.resumen { width: 100%; min-height: 190px; border-radius: 12px; border: 0; box-shadow: inset 0 0 0 2px var(--borde); padding: 14px; font: inherit; background: #fff; color: var(--tinta); resize: vertical; }
+  .atajos { display: flex; gap: 10px; flex-wrap: wrap; padding: 14px 18px 18px; }
+</style>
+</head>
+<body>
+<div class="boceto-aviso">Boceto para quien ayuda a distancia. En la versión real los datos están en la nube y esta vista se abre desde cualquier lugar.</div>
+<main class="ay">
+  <img src="img/logo-estetica.png" height="52" alt="Estudio Demo" style="height:52px;width:auto">
+  <h1>Cómo está la peluquería</h1>
+  <p class="sub" id="cuando"></p>
+
+  <section class="bloque">
+    <header><h2>Qué pasó hoy</h2></header>
+    <div class="estado" id="estado"></div>
+  </section>
+
+  <section class="bloque">
+    <header><h2>Lo que conviene revisar</h2></header>
+    <div id="alertas"></div>
+  </section>
+
+  <section class="bloque">
+    <header><h2>Resumen para mandarle a la profesional</h2></header>
+    <div style="padding:12px 18px 18px">
+      <p style="color:var(--tinta-2);margin-bottom:10px">Armado solo con los datos reales. Lo copiás o lo abrís en WhatsApp para escribirle vos.</p>
+      <textarea class="resumen" id="resumen" readonly aria-label="Resumen"></textarea>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <button class="btn chico" id="copiar" type="button">Copiar el resumen</button>
+        <a class="btn suave chico" id="wa" target="_blank" rel="noopener" href="#">Abrir en WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <header><h2>Atajos</h2></header>
+    <div class="atajos">
+      <a class="btn suave chico" href="panel.html">Panel de la profesional</a>
+      <a class="btn suave chico" href="panel.html#ajustes">Cargar precios y fotos</a>
+      <a class="btn suave chico" href="pared.html" target="_blank" rel="noopener">Pantalla del mostrador</a>
+      <a class="btn suave chico" href="cartel.html" target="_blank" rel="noopener">Cartel del QR</a>
+      <a class="btn suave chico" href="tarjeta.html" target="_blank" rel="noopener">Tarjeta "si algo no anda"</a>
+      <a class="btn suave chico" href="manual.html" target="_blank" rel="noopener">Manual de ayuda</a>
+    </div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status" hidden></div>
+<script src="datos.js"></script>
+<script src="nube.js?v=3"></script>
+<script src="store.js"></script>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var hhmm = function (m) { return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
+  var DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+  var MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  var items = Store.items();
+  var hoy = new Date();
+  var hoyK = Store.clave(hoy);
+  var plural = function (n, s, p) { return n + ' ' + (n === 1 ? s : p); };
+  var hace = function (ms) {
+    var m = Math.round(ms / 60000);
+    if (m < 1) return 'hace menos de un minuto';
+    if (m < 60) return 'hace ' + plural(m, 'minuto', 'minutos');
+    var h = Math.round(m / 60);
+    return h < 48 ? 'hace ' + plural(h, 'hora', 'horas') : 'hace ' + plural(Math.round(h / 24), 'día', 'días');
+  };
+
+  function pintar() {
+    $('#cuando').textContent = 'Datos de ' + DIAS[hoy.getDay()] + ' ' + hoy.getDate() + ' de ' + MESES[hoy.getMonth()] + '.';
+    var dia = Store.dia(hoyK);
+    var manana = Store.dia(Store.clave(Store.sumar(hoy, 1)));
+    var siete = Date.now() - 7 * 24 * 3600 * 1000;
+    var web7 = Store.todos().filter(function (t) { return t.origen === 'web' && (t.creado || 0) > siete && !t.seed; }).length;
+    var fila = Store.fila();
+    var atrasos = (function () { try { return JSON.parse(localStorage.getItem('ec_atrasos_v1') || '[]').length; } catch (e) { return 0; } })();
+    var caja = Store.caja(hoyK);
+    var previsto = caja.reduce(function (a, x) { return a + (x.anulado ? 0 : x.monto); }, 0);
+    var sinPrecio = items.filter(function (it) { return !Store.precio(it.id); });
+    var fotos = Store.fotos();
+    var sinFoto = items.filter(function (it) { return !fotos[it.id]; });
+    var lat = Store.ultimoLatido();
+    var edadLat = lat ? Date.now() - lat : null;
+
+    $('#estado').innerHTML = [
+      ['Turnos de hoy', String(dia.length)],
+      ['Turnos de mañana', String(manana.length)],
+      ['Reservas por la página (7 días)', String(web7)],
+      ['Esperando sin turno ahora', String(fila.length)],
+      ['Veces que avisó atraso', String(atrasos)],
+      ['Previsto de hoy', previsto ? '$' + previsto.toLocaleString('es-AR') : 'Sin precios'],
+    ].map(function (x) { return '<div class="dato-e"><span>' + x[0] + '</span><b>' + x[1] + '</b></div>'; }).join('');
+
+    var al = [];
+    if (edadLat === null) al.push(['mal', 'La pantalla del mostrador nunca se encendió', 'Pedile a la profesional que abra el link en el celular o tablet del mostrador.']);
+    else if (edadLat > 15 * 60000) al.push(['mal', 'La pantalla del mostrador no da señal', 'La vio por última vez ' + hace(edadLat) + '. Puede estar apagada, sin batería o sin wifi.']);
+    else al.push(['ok', 'La pantalla del mostrador está encendida', 'Última señal ' + hace(edadLat) + '.']);
+    if (Store.cerradoHoy()) al.push(['medio', 'Las reservas de hoy están cerradas', 'La profesional las cerró porque no da más. Se reabren desde su panel.']);
+    al.push(sinPrecio.length ? ['medio', 'Faltan precios en ' + plural(sinPrecio.length, 'servicio', 'servicios'), 'Sin precios, la página no muestra "desde $" y la caja no suma. Se cargan en Ajustes.'] : ['ok', 'Todos los servicios tienen precio', '']);
+    al.push(sinFoto.length ? ['medio', 'Faltan fotos en ' + plural(sinFoto.length, 'servicio', 'servicios'), 'La página muestra "Foto pendiente". Pedile las fotos por WhatsApp y las subís vos.'] : ['ok', 'Todos los servicios tienen foto', '']);
+    var sug = Store.sugerencias();
+    if (sug.length) al.push(['medio', 'Hay duraciones para revisar', 'Los atrasos de la profesional sugieren cambiar ' + plural(sug.length, 'servicio', 'servicios') + '. Se aprueba en Ajustes.']);
+    if (!dia.length && !manana.length) al.push(['mal', 'No hay turnos hoy ni mañana', 'Puede ser normal, o puede que la página no se esté usando. Fijate si le llegó el link a las clientas.']);
+    var pend = dia.filter(function (t) { return t.nom === 'Persona sin datos'; }).length;
+    if (pend) al.push(['medio', plural(pend, 'persona anotada', 'personas anotadas') + ' sin datos hoy', 'Es la opción de último recurso. Conviene que más clientas usen el QR del cartel.']);
+    $('#alertas').innerHTML = al.map(function (a) {
+      return '<div class="alerta"><span class="punto ' + (a[0] === 'ok' ? '' : a[0]) + '"></span><div><b>' + a[1] + '</b>' + (a[2] ? '<span>' + a[2] + '</span>' : '') + '</div></div>';
+    }).join('');
+
+    var lineas = ['Resumen de Estudio Demo, ' + DIAS[hoy.getDay()] + ' ' + hoy.getDate() + ' de ' + MESES[hoy.getMonth()] + ':'];
+    lineas.push('Hoy hay ' + plural(dia.length, 'turno', 'turnos') + '.');
+    dia.forEach(function (t) { lineas.push('- ' + hhmm(t.ini) + ' ' + t.nom + ', ' + t.serv); });
+    lineas.push('Mañana hay ' + plural(manana.length, 'turno', 'turnos') + '.');
+    if (fila.length) lineas.push('Hay ' + plural(fila.length, 'persona esperando', 'personas esperando') + ' sin turno.');
+    lineas.push('Entraron ' + plural(web7, 'reserva', 'reservas') + ' por la página en los últimos 7 días.');
+    $('#resumen').value = lineas.join('\n');
+    $('#wa').href = 'https://wa.me/?text=' + encodeURIComponent(lineas.join('\n'));
+  }
+
+  $('#copiar').addEventListener('click', function () {
+    var t = $('#toast');
+    var ok = function () { t.textContent = 'Resumen copiado.'; t.hidden = false; setTimeout(function () { t.hidden = true; }, 2500); };
+    if (navigator.clipboard) navigator.clipboard.writeText($('#resumen').value).then(ok, function () { $('#resumen').select(); document.execCommand('copy'); ok(); });
+    else { $('#resumen').select(); document.execCommand('copy'); ok(); }
+  });
+
+  pintar();
+  setInterval(pintar, 20000);
+  window.addEventListener('storage', function (e) { if (Store.CLAVES.indexOf(e.key) >= 0) pintar(); });
+})();
+</script>
+</body>
+</html>

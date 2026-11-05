@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="img/icono-estetica.png">
+<title>QR de cobro, Estudio Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+<link rel="stylesheet" href="carteles.css?v=4">
+
+<style>
+  @page { size: A5 portrait; margin: 0; }
+  body { background: var(--papel); }
+  .hoja {
+    width: 148mm; min-height: 210mm; margin: 18px auto; background: #fff; padding: 14mm 12mm;
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6mm;
+    box-shadow: 0 0 0 1px var(--linea);
+  }
+  .hoja .escalera { width: 100%; height: 3mm; }
+  .hoja h1 { font-size: 15mm; }
+  .hoja .prof { font-size: 6mm; color: var(--tinta-2); }
+  .hoja h2 { font-size: 13mm; margin-top: 4mm; }
+  .caja-qr { width: 78mm; height: 78mm; display: grid; place-items: center; border: 0.6mm dashed var(--linea); }
+  .caja-qr img { width: 100%; height: 100%; object-fit: contain; }
+  .caja-qr span { color: var(--tinta-2); font-size: 5mm; padding: 4mm; }
+  .alias { font-size: 6mm; }
+  .alias b { font-weight: 700; }
+  .aviso-seg { font-size: 4.2mm; color: var(--tinta-2); max-width: 105mm; }
+  .acciones { display: flex; gap: 12px; justify-content: center; padding: 8px 16px 32px; flex-wrap: wrap; }
+  @media print {
+    body { background: #fff; }
+    .hoja { margin: 0; box-shadow: none; width: 148mm; height: 210mm; }
+    .acciones, .boceto-aviso { display: none; }
+  }
+  .logo-hoja { width: 24mm; height: 24mm; border-radius: 50%; align-self: center; box-shadow: 0 0 0 1mm #fff, 0 0 0 1.5mm var(--champagne); }
+</style>
+</head>
+<body>
+<div class="boceto-aviso">Vista previa de la hoja para imprimir (A5). Falta subir el QR real de la profesional.</div>
+<div class="acciones">
+  <button class="btn" type="button" onclick="window.print()">Imprimir</button>
+  <a class="btn suave" href="panel.html">Volver al panel</a>
+</div>
+<div class="hoja">
+  <span class="deco a" aria-hidden="true"></span><span class="deco b" aria-hidden="true"></span>
+  <div class="escalera" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <img class="logo-hoja" src="img/logo-estetica.png" width="749" height="188" alt="Estudio Demo">
+  <h1>Estudio Demo</h1>
+  <div class="prof">Pagá con tu billetera, tu banco o tu tarjeta</div>
+  <div class="orn" aria-hidden="true"><i></i><b class="rombo"></b><i></i></div>
+  <h2>Escaneá para pagar</h2>
+  <div class="flecha" aria-hidden="true">↓</div>
+  <div class="caja-qr" id="qr"><span>Acá va el QR de la profesional</span></div>
+  <div class="alias" id="alias" hidden>Transferencia al alias: <b id="alias-t"></b></div>
+  <p class="aviso-seg">Antes de confirmar, revisá en tu app que el nombre del cobro sea el de la profesional.</p>
+  <div class="escalera" aria-hidden="true" style="margin-top:auto"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+</div>
+<script>
+  try {
+    var q = localStorage.getItem('qrla profesional');
+    if (q) document.getElementById('qr').innerHTML = '<img src="' + q + '" alt="QR de cobro de la profesional">';
+    var a = localStorage.getItem('aliasla profesional');
+    if (a) { document.getElementById('alias').hidden = false; document.getElementById('alias-t').textContent = a; }
+  } catch (e) { /* sin almacenamiento */ }
+</script>
+</body>
+</html>

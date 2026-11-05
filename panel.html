@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="img/logo-demo.png">
+<title>Estudio Demo, panel</title>
+<meta name="theme-color" content="#f2ede6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css?v=25">
+<link rel="manifest" href="panel.webmanifest">
+<meta name="theme-color" content="#f3e8d9">
+<script>
+  try { if (localStorage.getItem('estudio-demo_tema_v1') === 'oscuro') document.documentElement.setAttribute('data-tema', 'oscuro'); } catch (_) {}
+</script>
+</head>
+<body class="panel">
+<div class="panel-app">
+  <nav class="panel-lateral" id="lateral" aria-label="Secciones"><div class="logo"><img src="img/logo-demo.png" width="56" height="56" alt=""><span>Estudio Demo</span></div></nav>
+
+  
+<div class="login-panel" id="login-panel" hidden>
+  <form class="login-caja" id="login-form" autocomplete="on">
+    <img src="img/logo-demo.png" width="72" height="72" alt="">
+    <h1>Entrá a tu panel</h1>
+    <p class="ayuda" id="login-ayuda">Poné tu correo y tu contraseña.</p>
+    <div class="campo"><label for="lg-mail">Tu correo</label><input id="lg-mail" type="email" autocomplete="username" required></div>
+    <div class="campo"><label for="lg-pass">Tu contraseña</label><input id="lg-pass" type="password" autocomplete="current-password" minlength="8" required></div>
+    <p class="aviso-error" id="login-error" hidden></p>
+    <button class="btn" type="submit" id="lg-ok" style="width:100%;margin-top:16px">Entrar</button>
+    <button class="btn suave" type="button" id="lg-alt" style="width:100%;margin-top:10px">Es mi primera vez: crear mi acceso</button>
+    <p class="nota-boton" style="margin-top:12px">Versión de prueba: los datos son de prueba.</p>
+  </form>
+</div>
+
+  <main class="panel-contenido">
+
+    <!-- HOY: solo lo que importa ahora -->
+    <section class="vista" id="v-hoy">
+      <div class="saludo saludo-hoy">
+        <img class="avatar" src="img/logo-demo.png" width="84" height="84" alt="La profesional">
+        <div>
+          <h1>Hola, la profesional</h1>
+          <p id="fecha"></p>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+            <a class="btn suave chico" href="index.html" target="_blank" rel="noopener">Ver página pública ↗</a>
+            <a class="btn suave chico" href="manual.html" target="_blank" rel="noopener">Ayuda</a>
+            <button class="btn suave chico" id="btn-tema-panel" type="button" aria-pressed="false">Modo oscuro</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="dos-botones">
+        <button class="sin-turno" id="btn-sin-turno" type="button"><span id="ico-mas"></span>Llegó alguien sin turno</button>
+        <div class="atraso-rapido">
+          <span>Voy atrasada:</span>
+          <button class="chip" type="button" data-at="15">+15 min</button>
+          <button class="chip" type="button" data-at="30">+30 min</button>
+          <button class="chip" type="button" data-at="45">+45 min</button>
+        </div>
+      </div>
+
+      <section class="bloque" id="b-fila" aria-labelledby="t-fila" hidden>
+        <header><h2 id="t-fila">Llegaron sin turno</h2><small id="fila-cuenta"></small></header>
+        <div id="fila"></div>
+      </section>
+
+      <section class="bloque" id="b-cobrar" aria-labelledby="t-cobrar" hidden>
+        <header><h2 id="t-cobrar">Para cobrar</h2><small id="cobrar-n"></small></header>
+        <div id="cobrar"></div>
+      </section>
+
+      <section class="bloque" aria-labelledby="t-ahora">
+        <header><h2 id="t-ahora">Ahora</h2><small id="ahora-desde"></small></header>
+        <div class="ahora" id="ahora"></div>
+      </section>
+
+      <section class="bloque" aria-labelledby="t-sig">
+        <header><h2 id="t-sig">Siguiente</h2></header>
+        <div id="sig"></div>
+      </section>
+
+
+      <details class="bloque desplegable" id="b-resto">
+        <summary><span>El resto del día</span><small id="cuenta"></small></summary>
+        <div id="filas"></div>
+      </details>
+      <details class="bloque desplegable" id="b-manana">
+        <summary><span id="manana-t">Para avisar</span><small id="manana-n"></small></summary>
+        <div id="manana"></div>
+      </details>
+      <div class="controles">
+        <button class="btn suave chico" id="btn-cerrar" type="button" aria-pressed="false">Cerrar reservas de hoy</button>
+      </div>
+    </section>
+
+    <!-- MÁS: lo que se usa poco -->
+    <section class="vista" id="v-mas" hidden>
+      <div class="saludo"><h1>Más</h1><p>Lo que usás de vez en cuando.</p></div>
+      <div class="mas-lista">
+        <button class="mas-item" type="button" data-ir="agenda"><b>Turnos de otros días</b><span>Ver y agendar turnos</span></button>
+        <button class="mas-item" type="button" data-ir="clientas"><b>Mis clientas</b><span>Buscar a una clienta</span></button>
+        <button class="mas-item" type="button" data-ir="ajustes"><b>Precios y cambios</b><span>Servicios, horarios, fotos</span></button>
+        <a class="mas-item" href="manual.html" target="_blank" rel="noopener"><b>Ayuda</b><span>Cómo se usa cada cosa</span></a>
+        <button class="mas-item" type="button" id="btn-salir"><b>Salir</b><span>Cerrar mi sesión en este aparato</span></button>
+      </div>
+    </section>
+
+    <!-- AGENDA -->
+    <section class="vista" id="v-agenda" hidden>
+      <div class="saludo" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+        <div><h1>Agenda</h1><p>Tocá un día para ver sus turnos. Tocá un turno para escribirle o cancelarlo.</p></div>
+        <button class="btn chico" type="button" id="btn-agendar-panel">+ Agendar turno</button>
+      </div>
+      <div class="chips" id="ag-dias" style="margin-top:14px"></div>
+      <div class="lista-agenda" id="grilla" aria-label="Turnos del día"></div>
+    </section>
+
+    <!-- CLIENTAS -->
+    <section class="vista" id="v-clientas" hidden>
+      <div class="saludo"><h1>Clientas</h1><p>Buscá por nombre.</p></div>
+      <div class="campo"><input id="cl-buscar" type="search" placeholder="Escribí un nombre" aria-label="Buscar clienta"></div>
+      <div class="panel-columnas">
+        <section class="bloque" aria-label="Lista de clientas"><div id="cl-lista"></div></section>
+        <section class="bloque" aria-label="Ficha" id="cl-ficha"></section>
+      </div>
+    </section>
+
+    <!-- CAJA: se arma sola con la agenda -->
+    <section class="vista" id="v-caja" hidden>
+      <div class="saludo" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+        <div><h1>Mis ganancias</h1><p>Se arma sola con tus turnos.</p></div>
+        <button class="btn suave chico" type="button" id="btn-copiar-caja">Copiar resumen</button>
+      </div>
+      <section class="bloque resumen-caja" id="rc">
+        <div class="chips" id="rc-per" style="padding:10px 18px 0">
+          <button class="chip" type="button" data-per="hoy" aria-pressed="true">Hoy</button>
+          <button class="chip" type="button" data-per="semana" aria-pressed="false">Semana</button>
+          <button class="chip" type="button" data-per="mes" aria-pressed="false">Mes</button>
+        </div>
+        <div class="rc-grande" id="rc-grande"></div>
+        <details class="rc-mas"><summary>Ver más detalle</summary>
+        <div class="rc-kpis" id="rc-kpis"></div>
+        <div class="rc-sub" id="rc-dias-t"></div>
+        <div class="rc-dias" id="rc-dias"></div>
+        <div class="rc-sub">Lo que más te rinde</div>
+        <div id="rc-serv" class="rc-serv"></div>
+        </details>
+      </section>
+      <section class="bloque" id="b-resumen-wa">
+        <header><h2>Resumen por WhatsApp</h2><small>Para no tener que abrir el panel</small></header>
+        <div style="padding:12px 18px 18px">
+          <p class="ayuda" style="color:var(--tinta-2)">Te arma un mensaje con lo de hoy, lo de mañana y lo cobrado, listo para mandar a tu WhatsApp.</p>
+          <div class="campo"><label for="rs-tel">Tu WhatsApp</label><input id="rs-tel" type="tel" inputmode="tel" placeholder="Ej: 3755123456"></div>
+          <button class="btn" type="button" id="rs-enviar" style="width:100%;margin-top:14px">Enviarme el resumen</button>
+          <p id="rs-error" style="color:var(--aviso);font-weight:600;margin-top:10px"></p>
+          <details class="rc-mas" style="margin-top:6px"><summary>Ver cómo queda el mensaje</summary><pre id="rs-vista" class="rs-vista"></pre></details>
+        </div>
+      </section>
+      <details class="rc-mas rc-mas-dia"><summary>Ver cada turno cobrado</summary>
+      <div class="chips" id="caja-dias" style="margin-top:14px"></div>
+      <section class="bloque">
+        <header><h2 id="caja-dia-tit">Hoy</h2></header>
+        <div class="caja-total" id="caja-total"></div>
+        <div class="barras" id="caja-barras"></div>
+      </section>
+      <section class="bloque"><header><h2>Turnos del día</h2></header><div id="caja-mov"></div></section>
+      </details>
+    </section>
+
+    <!-- AJUSTES -->
+    <section class="vista" id="v-ajustes" hidden>
+      <div class="saludo"><h1>Precios y cambios</h1><p>Lo que cambies acá se ve solo en la página de las clientas.</p></div>
+
+      <section class="bloque" id="b-sugerencias" hidden>
+        <header><h2>Para revisar</h2></header>
+        <div id="sugerencias"></div>
+      </section>
+
+      <section class="bloque">
+        <header><h2>Precios y servicios</h2><small>Acá cargás cuánto cobrás</small></header>
+        <div class="enc-serv"><span>Servicio</span><span>Dura (min)</span><span>Espera (min)</span><span>Precio ($)</span></div>
+        <div id="aj-serv"></div>
+        <div style="padding:14px 18px"><button class="btn chico" type="button" id="aj-nuevo-serv">Agregar un servicio</button></div>
+      </section>
+
+      <section class="bloque">
+        <header><h2>Cuánto tarda según el largo del pelo</h2></header>
+        <div style="padding:14px 18px">
+          <p style="color:var(--tinta-2)">La página le pregunta a cada clienta cómo es su pelo y suma estos minutos al turno. Cambialos como te sirva.</p>
+          <div id="aj-extras"></div>
+        </div>
+      </section>
+      <div id="aj-medio" hidden></div>
+
+      <section class="bloque">
+        <header><h2>Fotos de mis trabajos</h2><small id="aj-fotos-cuenta">Se ven en la página</small></header>
+        <div style="padding:14px 18px">
+          <p style="color:var(--tinta-2)">Cada vez que subas un trabajo nuevo a Instagram (o desde tu celular), cargalo acá. Podés elegir una o varias fotos juntas (carrusel) y se ubica automáticamente primero en toda la página.</p>
+          <div class="campo"><label for="aj-foto-serv">Servicio</label><select id="aj-foto-serv" class="sel"></select></div>
+          <div class="campo"><label for="aj-foto-tit">Título del trabajo (opcional)</label><input id="aj-foto-tit" placeholder="Ej: Balayage miel y ondas"></div>
+          <div class="campo"><label for="aj-foto-txt">Descripción (podés pegar el texto de Instagram)</label><input id="aj-foto-txt" placeholder="Ej: Iluminación sutil"></div>
+          <div class="campo"><label for="aj-foto-ig">Link de la publicación de Instagram (opcional)</label><input id="aj-foto-ig" placeholder="Pegá el link del post"></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px">
+            <label class="btn chico">Elegir foto(s) y publicar trabajo
+              <input type="file" id="aj-foto-in" accept="image/*" multiple hidden>
+            </label>
+            <button class="btn suave chico" type="button" id="aj-restaurar-fotos" hidden>Restaurar ocultas</button>
+          </div>
+          <div class="campo" style="margin-top:20px"><label for="aj-foto-filtro">Filtrar trabajos cargados</label><select id="aj-foto-filtro" class="sel"></select></div>
+          <div class="fotos-fila" id="aj-fotos"></div>
+          <div style="margin-top:14px" id="aj-fotos-mas-wrap" hidden>
+            <button class="btn suave chico" type="button" id="aj-fotos-mas">Ver más fotos</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="bloque">
+        <header><h2>Mis datos: WhatsApp, Instagram y local</h2></header>
+        <div style="padding:14px 18px">
+          <div class="campo" style="margin-top:0"><label for="mk-wa">Número de WhatsApp para recibir turnos (con característica, ej: 5493757...)</label><input id="mk-wa" inputmode="tel" placeholder="Ej: 5493757000000"></div>
+          <div class="campo"><label for="mk-insta">Usuario de Instagram (sin @)</label><input id="mk-insta" autocomplete="off"></div>
+          <div class="campo"><label for="mk-dir">Dirección</label><input id="mk-dir" placeholder="Calle y número"></div>
+          <div class="campo"><label for="mk-coord">Ubicación exacta (latitud y longitud)</label><input id="mk-coord" inputmode="decimal" placeholder="Ej: -26.0000, -54.6000"><p style="color:var(--tinta-2);margin-top:4px">Se copia desde Google Maps tocando el lugar exacto del local. Hace que el mapa de la página marque el punto correcto.</p></div>
+          <div class="campo"><label for="mk-hor">Horario</label><input id="mk-hor" placeholder="Lunes a sábado de 9 a 20 h"></div>
+        </div>
+      </section>
+
+      <section class="bloque">
+        <header><h2>Días y horarios de atención</h2></header>
+        <div style="padding:14px 18px">
+          <div class="campo" style="margin-top:0"><label>Días que atendés (se aplica al turnero y a la agenda)</label>
+            <div class="chips" id="aj-dias"></div></div>
+          <div class="campo"><label for="aj-margen">Dejar libre para quien llega sin turno</label>
+            <select id="aj-margen" class="sel">
+              <option value="ninguno">Aprovechar las esperas de color (recomendado)</option>
+              <option value="30-2h">Un tramo de 30 minutos cada dos horas</option>
+              <option value="30-1h">Un tramo de 30 minutos por hora</option>
+            </select></div>
+        </div>
+      </section>
+
+      <section class="bloque">
+        <header><h2>Días libres y feriados</h2><small>Vacaciones, enfermedad, feriados</small></header>
+         <div style="padding:14px 18px 18px">
+           <p class="ayuda" style="color:var(--tinta-2)">Los días que cerrás desaparecen solos del turnero. Si ya había turnos, te los muestro para avisarles con un toque.</p>
+           <div class="campo"><label for="bq-desde">Desde el día</label><input id="bq-desde" type="date"></div>
+           <div class="campo"><label for="bq-hasta">Hasta el día (si es uno solo, dejalo vacío)</label><input id="bq-hasta" type="date"></div>
+           <div class="campo"><label for="bq-motivo">Motivo</label>
+             <select id="bq-motivo" class="sel"><option>Vacaciones</option><option>Estoy enferma</option><option>Feriado</option><option>Trámite</option><option>Otro motivo</option></select></div>
+           <button class="btn" type="button" id="bq-ok" style="width:100%;margin-top:14px">Cerrar esos días</button>
+           <p id="bq-error" style="color:var(--aviso);font-weight:600;margin-top:10px"></p>
+           <div id="bq-afectados"></div>
+           <h3 style="font-size:1.3rem;margin-top:20px">Feriados que vienen</h3>
+           <div class="chips" id="bq-feriados" style="margin-top:10px"></div>
+           <h3 style="font-size:1.3rem;margin-top:20px">Días cerrados</h3>
+           <div id="bq-lista" style="margin-top:8px"></div>
+           <h3 style="font-size:1.3rem;margin-top:24px">Un día con otro horario</h3>
+           <p class="ayuda" style="color:var(--tinta-2);margin-top:6px">Por ejemplo, salir más temprano un día. Ese día se atiende solo en ese horario.</p>
+           <div class="campo"><label for="es-dia">Día</label><input id="es-dia" type="date"></div>
+           <div class="campo"><label for="es-desde">Desde las</label><input id="es-desde" type="time" value="08:00"></div>
+           <div class="campo"><label for="es-hasta">Hasta las</label><input id="es-hasta" type="time" value="12:00"></div>
+           <button class="btn suave" type="button" id="es-ok" style="width:100%;margin-top:14px">Guardar ese horario</button>
+           <p id="es-error" style="color:var(--aviso);font-weight:600;margin-top:10px"></p>
+           <div id="es-lista" style="margin-top:8px"></div>
+         </div>
+       </section>
+
+      <section class="bloque">
+        <header><h2>Pantalla para el mostrador (opcional)</h2><small id="estado-pared"></small></header>
+        <div style="padding:14px 18px">
+          <p style="color:var(--tinta-2)">Dejá un celular o tablet viejo apoyado, con esta página abierta. Muestra el día en letra grande y se actualiza sola, como una agenda de papel que se escribe sola. No hay que tocar nada.</p>
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn chico" href="pared.html" target="_blank" rel="noopener">Ver la pantalla del día</a>
+            <a class="btn suave chico" href="tarjeta.html" target="_blank" rel="noopener">Tarjeta "si algo no anda"</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="bloque">
+        <header><h2>Cartel con QR para quienes llegan sin turno</h2></header>
+        <div style="padding:14px 18px">
+          <p style="color:var(--tinta-2)">Pegalo en el local o dejá un celular viejo en el mostrador con esa página abierta. La clienta se anota sola y ve a qué hora le toca.</p>
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn chico" href="cartel.html" target="_blank" rel="noopener">Ver e imprimir el cartel</a>
+            <a class="btn suave chico" href="estoy-aca.html" target="_blank" rel="noopener">Ver la página de anotarse</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="bloque">
+        <header><h2>Cobrar con QR (opcional)</h2></header>
+        <div style="padding:14px 18px">
+          <p style="color:var(--tinta-2)">Subí el QR de tu cuenta (el que te da tu app de Mercado Pago o de tu banco). Nunca se guardan claves.</p>
+          <div class="qr-fila">
+            <div class="qr-vista" id="qr-vista">Sin QR</div>
+            <div>
+              <label class="btn suave chico">Subir mi QR<input type="file" id="qr-in" accept="image/*" hidden></label>
+              <div class="campo"><label for="alias">Alias para transferencias</label><input id="alias" placeholder="Ej: nombre.apellido.mp"></div>
+            </div>
+          </div>
+          <div style="margin-top:16px"><a class="btn chico" href="qr.html" target="_blank" rel="noopener">Imprimir mi QR</a></div>
+        </div>
+      </section>
+    </section>
+
+  </main>
+
+  <nav class="panel-barra" id="barra" aria-label="Secciones"></nav>
+</div>
+
+<dialog class="sheet" id="d-nuevo-serv">
+  <h2>Agregar un servicio</h2>
+  <p class="ayuda" style="color:var(--tinta-2);font-size:1.1rem">Aparece en la página y en el turnero apenas lo guardás.</p>
+  <div class="campo"><label for="ns-nombre">Nombre</label><input id="ns-nombre" autocomplete="off"></div>
+  <div class="campo"><label for="ns-detalle">Descripción corta (opcional)</label><input id="ns-detalle" autocomplete="off"></div>
+  <div class="campo"><label for="ns-grupo">En qué grupo va</label><select id="ns-grupo" class="sel"></select></div>
+  <div class="campo"><label>¿Cambia según el largo del pelo?</label>
+    <div class="chips" id="ns-largo"><button class="chip" type="button" data-v="si" aria-pressed="true">Sí</button><button class="chip" type="button" data-v="no" aria-pressed="false">No</button></div></div>
+  <div class="campo"><label>¿Le preguntamos cómo es el pelo?</label>
+    <div class="chips" id="ns-pelo"><button class="chip" type="button" data-v="si" aria-pressed="true">Sí</button><button class="chip" type="button" data-v="no" aria-pressed="false">No</button></div></div>
+  <div class="campo"><label>¿Es un servicio de color?</label>
+    <div class="chips" id="ns-color"><button class="chip" type="button" data-v="si" aria-pressed="false">Sí</button><button class="chip" type="button" data-v="no" aria-pressed="true">No</button></div></div>
+  <div class="campo"><label for="ns-min">Cuánto dura, en minutos (para pelo medio)</label><input id="ns-min" inputmode="numeric" placeholder="Ej: 90"></div>
+  <div class="campo"><label for="ns-esp">Minutos de espera en los que quedás libre</label><input id="ns-esp" inputmode="numeric" value="0"></div>
+  <div class="campo"><label for="ns-precio">Precio (opcional)</label><input id="ns-precio" inputmode="numeric" placeholder="Ej: 45000"></div>
+  <p id="ns-error" style="color:var(--aviso);font-weight:600;margin-top:10px"></p>
+  <div class="botones"><button class="btn suave" type="button" data-cerrar>Cancelar</button><button class="btn" type="button" id="ns-ok">Guardar servicio</button></div>
+</dialog>
+<dialog class="sheet" id="d-sumar">
+  <div id="su-form">
+    <h2>Sumar un servicio</h2>
+    <p class="ayuda" id="su-quien" style="color:var(--tinta-2);font-size:1.1rem"></p>
+    <div id="su-lista"></div>
+    <div class="botones"><button class="btn suave" type="button" data-cerrar>Cerrar</button></div>
+  </div>
+  <div id="su-res" hidden></div>
+</dialog>
+
+<dialog class="sheet" id="d-qr">
+  <h2>Llegó alguien sin turno</h2>
+  <p class="ayuda" style="color:var(--tinta-2);font-size:1.1rem">Tocá un servicio rápido o elegí de la lista:</p>
+  
+  <div class="directos-grid">
+    <button class="btn-directo" type="button" data-directo="corte">
+      <b>Corte</b>
+      <small>35 min</small>
+    </button>
+    <button class="btn-directo" type="button" data-directo="peinado">
+      <b>Lavado y peinado</b>
+      <small>30 min</small>
+    </button>
+    <button class="btn-directo" type="button" data-directo="nutritivo">
+      <b>Nutrición</b>
+      <small>50 min</small>
+    </button>
+    <button class="btn-directo" type="button" data-directo="consulta">
+      <b>A definir</b>
+      <small>2 h 30</small>
+    </button>
+  </div>
+
+  <details style="margin-top:14px">
+    <summary style="cursor:pointer;font-weight:600;color:var(--tinta-2);padding:6px 0">Ver todos los servicios o poner nombre ›</summary>
+    <div style="margin-top:10px">
+      <div class="campo" style="margin-top:6px">
+        <label for="st-nombre">Nombre de la clienta (opcional)</label>
+        <input id="st-nombre" autocomplete="off" placeholder="Ej: Marcela (o dejá vacío)">
+      </div>
+      <div id="st-lista"></div>
+      <p id="st-error" style="color:var(--aviso);font-weight:600;margin-top:10px;display:none"></p>
+      <button class="btn" type="button" id="st-ok" disabled style="width:100%;margin-top:14px">Agregar a la agenda</button>
+    </div>
+  </details>
+
+  <details style="margin-top:10px">
+    <summary style="cursor:pointer;color:var(--tinta-2);font-size:1rem;padding:6px 0">Que ella se anote sola con su celular ›</summary>
+    <div style="margin-top:10px;text-align:center">
+      <p style="color:var(--tinta-2);font-size:0.95rem;margin-bottom:8px">Mostrale este código con tu celular o dejalo en el mostrador:</p>
+      <div class="qr-grande" id="qr-grande">Generando...</div>
+    </div>
+  </details>
+
+  <div class="botones" style="margin-top:18px">
+    <button class="btn suave" type="button" data-cerrar style="width:100%">Cerrar</button>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="d-cambiar">
+  <h2 id="cb-titulo">Cobrar</h2>
+  <p class="ayuda" style="color:var(--tinta-2)">Revisá lo que se hizo y cuánto sale cada cosa.</p>
+  <div id="cb-lineas" class="cb-lineas"></div>
+  <button class="btn suave chico" type="button" id="cb-add">+ Agregar otra cosa</button>
+  <div class="campo"><label for="cb-desc">Descuento (si hubo)</label><input id="cb-desc" inputmode="numeric" placeholder="0"></div>
+  <div class="cb-total"><span>Total a cobrar</span><b id="cb-total">$0</b></div>
+  <div class="campo"><label>Cómo pagó <small style="font-weight:500;color:var(--tinta-2)">(si querés anotarlo)</small></label>
+    <div class="chips" id="cb-medios">
+      <button class="chip" type="button" data-m="Efectivo" aria-pressed="false">Efectivo</button>
+      <button class="chip" type="button" data-m="Transferencia" aria-pressed="false">Transferencia</button>
+      <button class="chip" type="button" data-m="QR" aria-pressed="false">QR</button>
+      <button class="chip" type="button" data-m="Tarjeta" aria-pressed="false">Tarjeta</button>
+    </div>
+  </div>
+  <div class="botones"><button class="btn suave" type="button" data-cerrar>Cancelar</button><button class="btn" type="button" id="cb-ok">Cobrar</button></div>
+  <div style="margin-top:12px"><button class="btn suave" type="button" id="cb-no" style="width:100%">No se cobró</button></div>
+</dialog>
+
+<dialog class="sheet" id="d-agendar">
+  <h2>Agendar turno</h2>
+  <p class="ayuda" style="color:var(--tinta-2);font-size:1.05rem">Anotá un turno para hoy o los próximos días.</p>
+  <div class="campo"><label for="ag-nom">Nombre de la clienta</label><input id="ag-nom" autocomplete="off" placeholder="Ej: Valeria G."></div>
+  <div class="campo"><label for="ag-tel">WhatsApp (opcional)</label><input id="ag-tel" type="tel" inputmode="tel" placeholder="Ej: 3757000000"></div>
+  <div class="campo"><label for="ag-serv">Servicio</label><select id="ag-serv" class="sel"></select></div>
+  <div class="campo" id="ag-largo-wrap"><label>Largo del pelo</label>
+    <div class="chips" id="ag-largo">
+      <button class="chip" type="button" data-agl="corto" aria-pressed="false">Corto</button>
+      <button class="chip" type="button" data-agl="medio" aria-pressed="true">Medio</button>
+      <button class="chip" type="button" data-agl="largo" aria-pressed="false">Largo</button>
+    </div>
+  </div>
+  <div class="campo"><label for="ag-fecha">Día</label><select id="ag-fecha" class="sel"></select></div>
+  <div class="campo"><label for="ag-hora">Horario libre</label><select id="ag-hora" class="sel"></select></div>
+  <p id="ag-error" style="color:var(--aviso);font-weight:600;margin-top:10px"></p>
+  <div class="botones"><button class="btn suave" type="button" data-cerrar>Cancelar</button><button class="btn" type="button" id="ag-guardar">Guardar turno</button></div>
+</dialog>
+
+
+
+<dialog class="sheet" id="d-cl-editar">
+  <h2>Editar clienta</h2>
+  <p class="ayuda" style="color:var(--tinta-2)">Se cambia en todos sus turnos.</p>
+  <div class="campo"><label for="cle-nom">Nombre</label><input id="cle-nom" autocomplete="off"></div>
+  <div class="campo"><label for="cle-tel">WhatsApp</label><input id="cle-tel" type="tel" inputmode="tel" placeholder="Ej: 3755123456"></div>
+  <p id="cle-error" style="color:var(--aviso);font-weight:600;margin-top:10px"></p>
+  <div class="botones"><button class="btn suave" type="button" data-cerrar>Cancelar</button><button class="btn" type="button" id="cle-ok">Guardar</button></div>
+</dialog>
+<dialog class="sheet" id="d-cl-borrar">
+  <h2 id="clb-titulo">Borrar clienta</h2>
+  <p id="clb-txt" class="ayuda" style="color:var(--tinta-2);font-size:1.1rem;margin-top:6px"></p>
+  <div class="botones" style="margin-top:16px"><button class="btn suave" type="button" data-cerrar>No, dejarla</button><button class="btn peligro" type="button" id="clb-ok">Sí, borrarla</button></div>
+</dialog>
+<dialog class="sheet" id="d-mover">
+  <h2 id="mv-titulo">Mover turno</h2>
+  <div id="mv-form">
+    <button class="btn" type="button" id="mv-rapido" style="width:100%;margin-top:12px"></button>
+    <p class="ayuda" style="color:var(--tinta-2);margin-top:14px">O elegí otro día y horario:</p>
+    <div class="campo"><label for="mv-fecha">Día</label><select id="mv-fecha" class="sel"></select></div>
+    <div class="campo"><label for="mv-hora">Horario libre</label><select id="mv-hora" class="sel"></select></div>
+    <p id="mv-error" style="color:var(--aviso);font-weight:600;margin-top:10px"></p>
+    <div class="botones"><button class="btn suave" type="button" data-cerrar>Cancelar</button><button class="btn" type="button" id="mv-ok">Mover</button></div>
+  </div>
+  <div id="mv-res" hidden></div>
+</dialog>
+<dialog class="sheet" id="d-cs">
+  <h2 id="cs-titulo">Cambiar el servicio</h2>
+  <p class="ayuda" style="color:var(--tinta-2)">Se queda en el mismo horario si entra.</p>
+  <div class="campo"><label for="cs-serv">Servicio</label><select id="cs-serv" class="sel"></select></div>
+  <div class="campo" id="cs-largo-wrap"><label>Largo del pelo</label>
+    <div class="chips" id="cs-largo">
+      <button class="chip" type="button" data-csl="corto" aria-pressed="false">Corto</button>
+      <button class="chip" type="button" data-csl="medio" aria-pressed="true">Medio</button>
+      <button class="chip" type="button" data-csl="largo" aria-pressed="false">Largo</button>
+    </div>
+  </div>
+  <p id="cs-error" style="color:var(--aviso);font-weight:600;margin-top:10px"></p>
+  <div class="botones"><button class="btn suave" type="button" data-cerrar>Cancelar</button><button class="btn" type="button" id="cs-ok">Cambiar</button></div>
+</dialog>
+<dialog class="sheet" id="d-turno-det">
+  <h2 id="td-nom">Turno</h2>
+  <p id="td-det" style="color:var(--tinta-2);font-size:1.1rem;margin-top:4px"></p>
+  <div id="td-acciones" style="margin-top:18px;display:grid;gap:10px"></div>
+  <div class="botones" style="margin-top:14px"><button class="btn suave" type="button" data-cerrar>Cerrar</button></div>
+</dialog>
+
+
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="datos.js"></script>
+<script src="trabajos.js"></script>
+<script src="nube.js?v=3"></script>
+<script src="store.js"></script>
+<script src="iconos.js"></script>
+<script src="panel.js"></script>
+<script src="panel-vistas.js"></script>
+<script>
+  (function () {
+    var b = document.getElementById('btn-tema-panel'); if (!b) return;
+    var raiz = document.documentElement;
+    function pintar() { var o = raiz.getAttribute('data-tema') === 'oscuro'; b.textContent = o ? 'Modo claro' : 'Modo oscuro'; b.setAttribute('aria-pressed', String(o)); }
+    pintar();
+    b.addEventListener('click', function () {
+      var n = raiz.getAttribute('data-tema') === 'oscuro' ? 'claro' : 'oscuro';
+      raiz.setAttribute('data-tema', n);
+      try { localStorage.setItem('estudio-demo_tema_v1', n); } catch (_) {}
+      pintar();
+    });
+  })();
+</script>
+<script>
+  /* Ajustes: cada sección se abre y se cierra con un toque en su título */
+  (function () {
+    var v = document.getElementById('v-ajustes'); if (!v) return;
+    v.querySelectorAll('section.bloque').forEach(function (s, i) {
+      if (s.id === 'b-sugerencias') return;
+      var cab = s.querySelector(':scope > header'); if (!cab) return;
+      s.classList.add('plegable');
+      cab.setAttribute('role', 'button'); cab.setAttribute('tabindex', '0'); cab.setAttribute('aria-expanded', 'false');
+      var cuerpo = document.createElement('div'); cuerpo.className = 'plegable-cuerpo'; cuerpo.hidden = true;
+      while (cab.nextSibling) cuerpo.appendChild(cab.nextSibling);
+      s.appendChild(cuerpo);
+      var alt = function () { var ab = cuerpo.hidden; cuerpo.hidden = !ab; cab.setAttribute('aria-expanded', String(ab)); s.classList.toggle('abierta', ab); };
+      cab.addEventListener('click', alt);
+      cab.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); alt(); } });
+    });
+  })();
+</script>
+<script>
+  /* Ingreso al panel (Supabase) */
+  (function () {
+    var N = window.NUBE, caja = document.getElementById('login-panel'), form = document.getElementById('login-form');
+    var s = document.getElementById('btn-salir'); if (s) s.addEventListener('click', function () { if (N && N.salir) N.salir(); });
+    if (!N || !N.sb || N.modo === 'local') return;      // sin conexión: sigue como antes
+    var crear = false, err = document.getElementById('login-error');
+    function mostrarLogin(msg) { caja.hidden = false; document.body.classList.add('sin-ingreso'); if (msg) { err.textContent = msg; err.hidden = false; } }
+    if (N.confirmado) {
+      form.innerHTML = '<img src="img/logo-demo.png" width="72" height="72" alt="" style="border-radius:50%;align-self:center;margin-bottom:8px"><h1>¡Tu cuenta ya está confirmada!</h1><p class="ayuda" style="margin-top:8px">Ya podés entrar a tu panel.</p><button class="btn" type="button" id="lg-entrar" style="width:100%;margin-top:20px">Entrar a mi panel</button>';
+      caja.hidden = false; document.body.classList.add('sin-ingreso');
+      document.getElementById('lg-entrar').addEventListener('click', async function () {
+        this.disabled = true; this.textContent = 'Entrando...';
+        try { await N.sb.auth.getSession(); } catch (e) {}
+        history.replaceState(null, '', location.pathname); location.reload();
+      });
+      return;
+    }
+    if (N.errorLink) { mostrarLogin('El link del mail venció o ya se usó. Entrá con tu correo y contraseña, o creá el acceso de nuevo.'); }
+    else if (N.modo === 'anon') mostrarLogin();
+    N.listo.then(function () { if (N.sinPermiso) { N.sb.auth.signOut(); try { localStorage.removeItem('ec_sesion'); } catch (e) {} mostrarLogin('Esta cuenta no tiene permiso para entrar al panel.'); } });
+    document.getElementById('lg-alt').addEventListener('click', function () {
+      crear = !crear;
+      document.getElementById('lg-ok').textContent = crear ? 'Crear mi acceso' : 'Entrar';
+      this.textContent = crear ? 'Ya tengo acceso: entrar' : 'Es mi primera vez: crear mi acceso';
+      document.getElementById('login-ayuda').textContent = crear ? 'Elegí una contraseña de 8 letras o más.' : 'Poné tu correo y tu contraseña.';
+      err.hidden = true;
+    });
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault(); err.hidden = true;
+      var mail = document.getElementById('lg-mail').value.trim(), pass = document.getElementById('lg-pass').value;
+      var r = crear ? await N.sb.auth.signUp({ email: mail, password: pass, options: { emailRedirectTo: location.origin + '/panel.html' } }) : await N.sb.auth.signInWithPassword({ email: mail, password: pass });
+      if (r.error) { err.textContent = /invalid login/i.test(r.error.message) ? 'El correo o la contraseña no coinciden.' : r.error.message; err.hidden = false; return; }
+      if (!r.data.session) { err.textContent = 'Te mandamos un mail para confirmar tu correo. Confirmalo y después entrá.'; err.hidden = false; return; }
+      location.reload();
+    });
+  })();
+</script>
+</body>
+</html>
