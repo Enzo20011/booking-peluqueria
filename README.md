@@ -4,6 +4,14 @@ Sistema de turnos online para una peluquería o centro de estética, con un pane
 
 Esta es la versión de demostración y es genérica. El negocio, los servicios, los horarios y las imágenes son de ejemplo (las fotos están generadas, no hay personas).
 
+Demo: https://booking-peluqueria-demo.vercel.app (el panel, sin contraseña, está en `/panel.html`).
+
+![Página de turnos de una peluquería con las fotos de ejemplo de los trabajos](docs/img/booking-1.webp)
+![Panel de hoy con el turno siguiente, la opción de anotar a quien llega sin turno y los avisos de atraso](docs/img/booking-2.webp)
+![Pantalla del local con la hora y el turno que sigue](docs/img/booking-3.webp)
+
+Más trabajos en mi portfolio: https://portfolio-fawn-kappa-35.vercel.app
+
 ## Qué hace
 
 **Para la clienta** (`index.html`)
