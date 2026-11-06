@@ -4,10 +4,7 @@
 /* ---------- Hoja A5 ---------- */
 .hoja {
   position: relative; isolation: isolate; overflow: hidden;
-  background:
-    radial-gradient(120% 70% at 100% 0%, #fbe6c9 0%, rgba(251, 230, 201, 0) 60%),
-    radial-gradient(110% 60% at 0% 100%, #ecd0ac 0%, rgba(236, 208, 172, 0) 62%),
-    linear-gradient(170deg, #fffaf2 0%, #f8ead7 100%) !important;
+  background: #fbf1e2 !important;
   border-radius: 9mm; box-shadow: 0 14px 40px -14px rgba(110, 70, 35, 0.4), 0 0 0 1px rgba(200, 159, 109, 0.35) !important;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
